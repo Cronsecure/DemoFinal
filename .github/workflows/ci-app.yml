@@ -46,7 +46,7 @@ jobs:
           fail-build: false
           output-format: table
 
-  docker-build:
+docker-build:
     name: Build Docker image
     outputs:
       full_docker_image_tag: ${{ steps.build_image.outputs.full_docker_image_tag }}
@@ -65,6 +65,10 @@ jobs:
       - name: Set IMAGE_TAG env variable
         run: |
           echo "IMAGE_TAG=`echo ${BRANCH_TAG}-${SHORT_SHA}`" >> $GITHUB_ENV
+
+      - name: Update pip
+        run: |
+          python -m pip install --upgrade pip
 
       - name: Build and tag image
         id: build_image
@@ -90,6 +94,7 @@ jobs:
           name: docker-image
           path: /tmp/docker-image.tar
           retention-days: 1
+
 
 
 
