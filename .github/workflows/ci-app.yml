@@ -82,7 +82,7 @@ jobs:
           echo ECR_REPOSITORY: $ECR_REPOSITORY
           echo IMAGE_TAG: $IMAGE_TAG
           echo "Building and tagging $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ..."
-          docker build -t $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile .
+          docker build --no-cache -t $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile .
           mkdir -p /tmp
           docker save "$REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" > /tmp/docker-image.tar
           echo "full_docker_image_tag=$REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
@@ -94,7 +94,6 @@ jobs:
           name: docker-image
           path: /tmp/docker-image.tar
           retention-days: 1
-          fail-build: false
 
 
   docker-trivy-vuln:
